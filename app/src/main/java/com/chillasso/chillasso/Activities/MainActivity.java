@@ -1,5 +1,6 @@
-package com.chillasso.chillasso;
+package com.chillasso.chillasso.Activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import com.chillasso.chillasso.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
 
 
 

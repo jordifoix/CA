@@ -1,4 +1,4 @@
-package com.chillasso.chillasso;
+package com.chillasso.chillasso.Activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.chillasso.chillasso.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -50,7 +51,31 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     });
-
+                }
+            }
+        });
+        sign_up_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String phoneNumber = phone_number_editText.getText().toString()+"@mydomain.com";
+                final String password = password_editText.getText().toString();
+                if(TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(password)){
+                    Toast.makeText(LoginActivity.this,"All field musts be filled",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    mAuth.createUserWithEmailAndPassword(phoneNumber, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Toast.makeText(LoginActivity.this,"Sign up succesful!!",Toast.LENGTH_SHORT).show();
+                            mAuth.signInWithEmailAndPassword(phoneNumber,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });
