@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.chillasso.chillasso.LoginActivity">
+
+    <EditText
+        android:id="@+id/phone_number_editText"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter a phone number "
+        android:inputType="phone"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/password_editText"
+        android:layout_alignStart="@+id/password_editText"
+        android:layout_marginTop="128dp" />
+
+    <EditText
+        android:id="@+id/password_editText"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/phone_number_editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:ems="10"
+        android:hint="Enter a Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/sign_up_button"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/password_editText"
+        android:layout_alignStart="@+id/password_editText"
+        android:layout_below="@+id/password_editText"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="49dp"
+        android:text="Sign up " />
+
+    <Button
+        android:id="@+id/sing_in_button"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sign_up_button"
+        android:layout_alignEnd="@+id/password_editText"
+        android:layout_alignRight="@+id/password_editText"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Sing In" />
+
+    <CheckBox
+        android:id="@+id/remember_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sign_up_button"
+        android:layout_alignStart="@+id/sign_up_button"
+        android:layout_below="@+id/password_editText"
+        android:layout_marginTop="13dp"
+        android:text="Remember me " />
+</RelativeLayout>
