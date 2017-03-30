@@ -6,16 +6,17 @@ import io.realm.RealmObject;
  * Created by Enric on 30/03/2017.
  */
 
-public class User extends RealmObject {
+public class UserRegistration extends RealmObject {
+
     private String phoneNumber;
     private String password;
 
-    public User(){
+    public UserRegistration(){
         phoneNumber = "";
         password = "";
     }
 
-    public User(String phoneNumber, String password) {
+    public UserRegistration(String phoneNumber, String password) {
         this.phoneNumber = phoneNumber;
         this.password = password;
     }
