@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         sign_up_button = (Button) findViewById(R.id.sign_up_button);
         sign_in_button = (Button) findViewById(R.id.sign_in_button);
         mAuth = FirebaseAuth.getInstance();
+
         sign_in_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,11 +45,20 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this,"All field musts be filled",Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    if(remember_me_checkBox.isChecked()){
+                        //save to realm
+
+                    }
                     mAuth.signInWithEmailAndPassword(phoneNumber,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(intent);
+                            if(task.isSuccessful()) {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "Can not sign in user.Try again", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
@@ -63,17 +73,30 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this,"All field musts be filled",Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    if(remember_me_checkBox.isChecked()){
+
+
+                    }
                     mAuth.createUserWithEmailAndPassword(phoneNumber, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Toast.makeText(LoginActivity.this,"Sign up succesful!!",Toast.LENGTH_SHORT).show();
-                            mAuth.signInWithEmailAndPassword(phoneNumber,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                    startActivity(intent);
-                                }
-                            });
+                            if(task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Sign up succesful!!", Toast.LENGTH_SHORT).show();
+                                mAuth.signInWithEmailAndPassword(phoneNumber, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            Toast.makeText(LoginActivity.this, "Can not sign in user.Try again", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+                            else{
+                                Toast.makeText(LoginActivity.this, "Can not create in user.Try again", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
