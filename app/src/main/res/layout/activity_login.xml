@@ -42,7 +42,7 @@
         android:text="Sign up " />
 
     <Button
-        android:id="@+id/sing_in_button"
+        android:id="@+id/sign_in_button"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/sign_up_button"
@@ -53,7 +53,7 @@
         android:text="Sing In" />
 
     <CheckBox
-        android:id="@+id/remember_checkbox"
+        android:id="@+id/remember_me_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/sign_up_button"
