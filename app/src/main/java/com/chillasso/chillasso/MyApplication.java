@@ -3,6 +3,7 @@ package com.chillasso.chillasso;
 import android.app.Application;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.chillasso.chillasso.Activities.LoginActivity;
 import com.chillasso.chillasso.Activities.MainActivity;
@@ -47,6 +48,7 @@ public class MyApplication extends Application {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
+                            Log.d("FOIX","Successful");
                             Intent intent = new Intent(MyApplication.this, MainActivity.class);
                             startActivity(intent);
                         }
