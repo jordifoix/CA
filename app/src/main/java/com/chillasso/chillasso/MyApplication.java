@@ -35,7 +35,7 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
-        Realm.deleteRealm(config);
+        //Realm.deleteRealm(config);
 
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
