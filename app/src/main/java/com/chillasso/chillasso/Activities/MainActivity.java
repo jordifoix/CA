@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,12 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.chillasso.chillasso.Class.UserRegistration;
 import com.chillasso.chillasso.R;
+
+import java.util.List;
+
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
+        realm.commitTransaction();
 
 
 
