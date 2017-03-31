@@ -1,64 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context="com.chillasso.chillasso.Activities.LoginActivity">
 
-    <EditText
-        android:id="@+id/phone_number_editText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter a phone number "
-        android:inputType="phone"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/password_editText"
-        android:layout_alignStart="@+id/password_editText"
-        android:layout_marginTop="128dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4.5"
+        android:gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/password_editText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/phone_number_editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
-        android:ems="10"
-        android:hint="Enter a Password"
-        android:inputType="textPassword" />
+        <ListView
+            android:id="@+id/users_list"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"></ListView>
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/sign_up_button"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/password_editText"
-        android:layout_alignStart="@+id/password_editText"
-        android:layout_below="@+id/password_editText"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="49dp"
-        android:text="Sign up " />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5.5">
 
-    <Button
-        android:id="@+id/sign_in_button"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/sign_up_button"
-        android:layout_alignEnd="@+id/password_editText"
-        android:layout_alignRight="@+id/password_editText"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:text="Sing In" />
+        <EditText
+            android:id="@+id/phone_number_editText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter a phone number "
+            android:inputType="phone"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/password_editText"
+            android:layout_alignStart="@+id/password_editText"
+             />
 
-    <CheckBox
-        android:id="@+id/remember_me_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/sign_up_button"
-        android:layout_alignStart="@+id/sign_up_button"
-        android:layout_below="@+id/password_editText"
-        android:layout_marginTop="13dp"
-        android:text="Remember me " />
-</RelativeLayout>
+        <EditText
+            android:id="@+id/password_editText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/phone_number_editText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"
+            android:ems="10"
+            android:hint="Enter a Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/sign_up_button"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/password_editText"
+            android:layout_alignStart="@+id/password_editText"
+            android:layout_below="@+id/password_editText"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="49dp"
+            android:text="Sign up " />
+
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/sign_up_button"
+            android:layout_alignEnd="@+id/password_editText"
+            android:layout_alignRight="@+id/password_editText"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Sing In" />
+
+        <CheckBox
+            android:id="@+id/remember_me_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/sign_up_button"
+            android:layout_alignStart="@+id/sign_up_button"
+            android:layout_below="@+id/password_editText"
+            android:layout_marginTop="13dp"
+            android:text="Remember me " />
+    </RelativeLayout>
+
+</LinearLayout>

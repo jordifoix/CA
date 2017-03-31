@@ -40,7 +40,7 @@ public class MyApplication extends Application {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
-        if (users.size()>0) {
+        /*if (users.size()>0) {
             currentUser = users.get(users.size()-1);
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(currentUser.getPhoneNumber()+"@mydomain.com",currentUser.getPassword())
@@ -54,12 +54,12 @@ public class MyApplication extends Application {
                         }
                     }
                 });
-        }
-        else {
+        }*/
+        //else {
             Intent intent = new Intent(MyApplication.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-        }
+       // }
         realm.commitTransaction();
     }
 

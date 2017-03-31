@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.chillasso.chillasso.Class.UserRegistration;
 import com.chillasso.chillasso.R;
+import com.chillasso.chillasso.UsersListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,31 +26,37 @@ import java.util.List;
 
 import io.realm.Realm;
 
+import static android.R.attr.phoneNumber;
+
 public class LoginActivity extends AppCompatActivity {
 
+    private ListView users_list;
     private EditText phone_number_editText,password_editText;
     private CheckBox remember_me_checkBox;
     private Button sign_up_button,sign_in_button;
     private FirebaseAuth mAuth;
     private Realm realm;
+    private UsersListAdapter usersListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        users_list = (ListView) findViewById(R.id.users_list);
         phone_number_editText = (EditText) findViewById(R.id.phone_number_editText);
         password_editText = (EditText) findViewById(R.id.password_editText);
         remember_me_checkBox = (CheckBox) findViewById(R.id.remember_me_checkbox);
         sign_up_button = (Button) findViewById(R.id.sign_up_button);
         sign_in_button = (Button) findViewById(R.id.sign_in_button);
+
+
         mAuth = FirebaseAuth.getInstance();
         realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
-        for(UserRegistration userRegistration: users){
-            Log.d("User","Phone number: "+userRegistration.getPhoneNumber()+" Password: "+userRegistration.getPassword());
-        }
+        final List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
+        usersListAdapter = new UsersListAdapter(this,users);
+        users_list.setAdapter(usersListAdapter);
         realm.commitTransaction();
 
         sign_in_button.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +132,22 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
+        users_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mAuth.signInWithEmailAndPassword(users.get(position).getPhoneNumber()+"@mydomain.com",users.get(position).getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(LoginActivity.this, "Can not sign in user.Try again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 }
