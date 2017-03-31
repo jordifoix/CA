@@ -1,4 +1,4 @@
-package com.chillasso.chillasso;
+package com.chillasso.chillasso.Adapters;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.chillasso.chillasso.Class.UserRegistration;
+import com.chillasso.chillasso.R;
 
 import java.util.ArrayList;
 import java.util.List;

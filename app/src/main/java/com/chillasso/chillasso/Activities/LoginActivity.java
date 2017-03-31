@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,7 +15,7 @@ import android.widget.Toast;
 
 import com.chillasso.chillasso.Class.UserRegistration;
 import com.chillasso.chillasso.R;
-import com.chillasso.chillasso.UsersListAdapter;
+import com.chillasso.chillasso.Adapters.UsersListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,8 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 import io.realm.Realm;
-
-import static android.R.attr.phoneNumber;
 
 public class LoginActivity extends AppCompatActivity {
 
