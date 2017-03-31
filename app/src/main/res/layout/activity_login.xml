@@ -17,7 +17,8 @@
         <ListView
             android:id="@+id/users_list"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content"
+            ></ListView>
     </RelativeLayout>
 
     <RelativeLayout
