@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
                     return "My Hang Outs";
                 case 2:
                     return "Post New Hang Out";
+                case 3:
+                    return "Settings";
             }
             return null;
         }

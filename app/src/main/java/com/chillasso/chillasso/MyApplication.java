@@ -40,6 +40,9 @@ public class MyApplication extends Application {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
+        for(UserRegistration userRegistration: users){
+            Log.d("User","Phone number: "+userRegistration.getPhoneNumber()+" Password: "+userRegistration.getPassword());
+        }
         if (users.size()>0) {
             currentUser = users.get(users.size()-1);
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -48,16 +51,19 @@ public class MyApplication extends Application {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Log.d("FOIX","Successful");
                             Intent intent = new Intent(MyApplication.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
                     }
                 });
         }
-        Intent intent = new Intent(MyApplication.this, LoginActivity.class);
-        startActivity(intent);
-        realm.commitTransaction();
+        else {
+            Intent intent = new Intent(MyApplication.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            realm.commitTransaction();
+        }
     }
 
 }
