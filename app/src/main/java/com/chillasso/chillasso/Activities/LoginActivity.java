@@ -48,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
         sign_in_button = (Button) findViewById(R.id.sign_in_button);
 
 
+        //ppillar el telefon del mobil, i en settings tab posar canviar usuari, i en login tambe, pero nomes es pot crear amb el telefon del mobil
+
+
         mAuth = FirebaseAuth.getInstance();
         realm = Realm.getDefaultInstance();
         realm.beginTransaction();

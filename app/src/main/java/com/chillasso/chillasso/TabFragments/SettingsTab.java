@@ -17,7 +17,7 @@ public class SettingsTab extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.settings_tab_layout,container,false);
+        View view = inflater.inflate(R.layout.settings_tab,container,false);
         return view;
     }
 }

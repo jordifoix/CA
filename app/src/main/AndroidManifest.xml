@@ -23,5 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.CreateGroup"></activity>
     </application>
+
 </manifest>
