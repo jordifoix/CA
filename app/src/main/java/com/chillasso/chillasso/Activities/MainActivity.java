@@ -1,7 +1,14 @@
 package com.chillasso.chillasso.Activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -10,6 +17,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +28,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chillasso.chillasso.R;
+import com.chillasso.chillasso.TabFragments.NewHangoutTab;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.attr.name;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private List<String> contacts;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -74,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this,CreateGroup.class);
+            Intent intent = new Intent(MainActivity.this, CreateGroup.class);
             startActivity(intent);
             return true;
         }
@@ -131,7 +147,14 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch(position){
+                case 2:
+                    NewHangoutTab newHangoutTab = new NewHangoutTab();
+                    return newHangoutTab;
+                default:
+                    return PlaceholderFragment.newInstance(position + 1);
+
+            }
         }
 
         @Override
@@ -148,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     return "My Hang Outs";
                 case 2:
-                    return "Post New Hang Out";
+                    return "New Hang Out";
                 case 3:
                     return "Settings";
             }

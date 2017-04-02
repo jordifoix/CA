@@ -2,17 +2,15 @@ package com.chillasso.chillasso;
 
 import android.app.Application;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.chillasso.chillasso.Activities.LoginActivity;
-import com.chillasso.chillasso.Activities.MainActivity;
+import com.chillasso.chillasso.Class.UserPhone;
 import com.chillasso.chillasso.Class.UserRegistration;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -35,9 +33,9 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
-        //Realm.deleteRealm(config);
 
-        Realm realm = Realm.getDefaultInstance();
+        //Login
+        final Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
         /*if (users.size()>0) {
@@ -61,6 +59,33 @@ public class MyApplication extends Application {
             startActivity(intent);
        // }
         realm.commitTransaction();
+
+        //fi logino
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                realm.beginTransaction();
+                for(DataSnapshot user : dataSnapshot.getChildren()){
+                    String phone = user.getKey();
+                    UserPhone userPhone = new UserPhone(phone);
+                    realm.copyToRealm(userPhone);
+                }
+                realm.commitTransaction();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
     }
+
 
 }
