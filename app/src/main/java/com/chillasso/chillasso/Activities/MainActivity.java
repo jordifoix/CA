@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.chillasso.chillasso.R;
 import com.chillasso.chillasso.TabFragments.NewHangoutTab;
+import com.chillasso.chillasso.TabFragments.SettingsTab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     NewHangoutTab newHangoutTab = new NewHangoutTab();
                     return newHangoutTab;
+                case 4:
+                    SettingsTab settingsTab = new SettingsTab();
+                    return settingsTab;
                 default:
                     return PlaceholderFragment.newInstance(position + 1);
 

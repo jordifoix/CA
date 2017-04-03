@@ -12,9 +12,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.chillasso.chillasso.Class.Contact;
 import com.chillasso.chillasso.Adapters.ContactListAdapter;
@@ -37,6 +39,8 @@ public class CreateGroup extends AppCompatActivity {
     private Button save_group_button;
     private ListView contactListview;
     private EditText search_contact_editText;
+    private TextView group_members_textView;
+    private boolean first;
     private ContactListAdapter contactListAdapter;
     private ContactListAdapter searchContactListAdapter;
     private List<UserPhone> users;
@@ -53,6 +57,9 @@ public class CreateGroup extends AppCompatActivity {
         save_group_button = (Button) findViewById(R.id.save_group_button);
         contactListview = (ListView) findViewById(R.id.contact_listView);
         search_contact_editText = (EditText) findViewById(R.id.search_editText);
+        group_members_textView = (TextView) findViewById(R.id.group_members_textView);
+
+        first = true;
 
         askPermissions();
 
@@ -128,10 +135,30 @@ public class CreateGroup extends AppCompatActivity {
         save_group_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //save group
+                //save group i guardar el contacte del user treientli el @mydomain.com
             }
         });
 
+        contactListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(first){
+                    if(search_contact.size() == 0) {
+                        group_members_textView.setText(group_members_textView.getText().toString() + " You," + contacts.get(position).getName());
+                    }
+                    else{
+                        group_members_textView.setText(group_members_textView.getText().toString()+" You,"+search_contact.get(position).getName());
+                    }
+                    first = false;
+                }
+                else {
+                    if(search_contact.size() == 0)
+                        group_members_textView.setText(group_members_textView.getText().toString()+","+contacts.get(position).getName());
+                    else
+                        group_members_textView.setText(group_members_textView.getText().toString()+","+search_contact.get(position).getName());
+                }
+            }
+        });
 
 
 
