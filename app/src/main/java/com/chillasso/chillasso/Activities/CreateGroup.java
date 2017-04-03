@@ -8,9 +8,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import com.chillasso.chillasso.Class.Contact;
+import com.chillasso.chillasso.Adapters.ContactListAdapter;
 import com.chillasso.chillasso.R;
 import com.chillasso.chillasso.Class.UserPhone;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,18 +33,32 @@ import io.realm.Realm;
 
 public class CreateGroup extends AppCompatActivity {
 
+    private EditText groupName;
+    private Button save_group_button;
+    private ListView contactListview;
+    private EditText search_contact_editText;
+    private ContactListAdapter contactListAdapter;
+    private ContactListAdapter searchContactListAdapter;
     private List<UserPhone> users;
     private List<Contact> contacts;
+    private List<Contact> search_contact;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
 
+        groupName = (EditText) findViewById(R.id.group_name_editText);
+        save_group_button = (Button) findViewById(R.id.save_group_button);
+        contactListview = (ListView) findViewById(R.id.contact_listView);
+        search_contact_editText = (EditText) findViewById(R.id.search_editText);
+
         askPermissions();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         contacts = new ArrayList<Contact>();
+        search_contact = new ArrayList<Contact>();
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         users = realm.where(UserPhone.class).findAll();
@@ -73,6 +94,60 @@ public class CreateGroup extends AppCompatActivity {
             }
         }
         cursor.close();
+
+        contactListAdapter = new ContactListAdapter(this,contacts);
+        contactListview.setAdapter(contactListAdapter);
+
+        search_contact_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                search_contact.clear();
+                for(Contact contact: contacts){
+                    if(Search(s.toString(),contact)){
+                        search_contact.add(contact);
+                    }
+                }
+                searchContactListAdapter = new ContactListAdapter(CreateGroup.this,search_contact);
+                if(contactListview != null){
+                    searchContactListAdapter.notifyDataSetChanged();
+                    contactListview.setAdapter(searchContactListAdapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        save_group_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //save group
+            }
+        });
+
+
+
+
+    }
+
+    private boolean Search(String s, Contact contact) {
+        for(int i = 0; i < s.length();++i){
+            if( s.charAt(i) != contact.getName().charAt(i) && upsideDown(s.charAt(i)) != contact.getName().charAt(i)
+                    && s.charAt(i) != contact.getPhone().charAt(i)) return false;
+        }
+        return true;
+    }
+
+    private char upsideDown(char c) {
+        if (c >= 65 && c <= 90) return (char) (c+32);
+        return (char) (c-32);
     }
 
     private boolean searchWithRealm(String phonenumber) {
