@@ -1,6 +1,7 @@
 package com.chillasso.chillasso.Class;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Enric on 02/04/2017.
@@ -8,6 +9,7 @@ import io.realm.RealmObject;
 
 public class UserPhone extends RealmObject {
 
+    @PrimaryKey
     private String phone;
 
     public UserPhone(){
@@ -21,7 +23,7 @@ public class UserPhone extends RealmObject {
         return phone;
     }
 
-    public void setPhone(String phone) {
+   /* public void setPhone(String phone) {
         this.phone = phone;
-    }
+    }*/
 }

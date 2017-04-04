@@ -60,7 +60,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="49dp"
-            android:text="Sign up " />
+            android:text="Sing up " />
 
         <Button
             android:id="@+id/sign_in_button"
@@ -81,7 +81,7 @@
             android:layout_alignStart="@+id/sign_up_button"
             android:layout_below="@+id/password_editText"
             android:layout_marginTop="13dp"
-            android:text="Remember me " />
+            android:text="Keep me logged in " />
     </RelativeLayout>
 
 </LinearLayout>

@@ -33,7 +33,7 @@ import java.util.List;
 
 import io.realm.Realm;
 
-public class CreateGroup extends AppCompatActivity {
+public class CreateGroupActivity extends AppCompatActivity {
 
     private EditText groupName;
     private Button save_group_button;
@@ -119,7 +119,7 @@ public class CreateGroup extends AppCompatActivity {
                         search_contact.add(contact);
                     }
                 }
-                searchContactListAdapter = new ContactListAdapter(CreateGroup.this,search_contact);
+                searchContactListAdapter = new ContactListAdapter(CreateGroupActivity.this,search_contact);
                 if(contactListview != null){
                     searchContactListAdapter.notifyDataSetChanged();
                     contactListview.setAdapter(searchContactListAdapter);

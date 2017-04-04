@@ -1,14 +1,7 @@
 package com.chillasso.chillasso.Activities;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -17,8 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,10 +22,7 @@ import com.chillasso.chillasso.R;
 import com.chillasso.chillasso.TabFragments.NewHangoutTab;
 import com.chillasso.chillasso.TabFragments.SettingsTab;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.name;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private static final String[] tab_name = {
+            "Active Hang Outs",
+            "My Hang Outs",
+            "New Hang Outs",
+            "Settings"
+    };
+    private static final int[] tab_icon = {
+            R.drawable.ic_event_note_white_24dp,
+            R.drawable.ic_history_white_24dp,
+            R.drawable.ic_add_white_24dp,
+            R.drawable.ic_settings_white_24dp
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        //set tabs icons and name
+        for(int i = 0; i < tabLayout.getTabCount();++i){
+            TextView tab_textView = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab,null);
+            tab_textView.setText(tab_name[i]);
+            tab_textView.setCompoundDrawablesWithIntrinsicBounds(0,tab_icon[i],0,0);
+            tabLayout.getTabAt(i).setCustomView(tab_textView);
+        }
     }
 
 
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, CreateGroup.class);
+            Intent intent = new Intent(MainActivity.this, CreateGroupActivity.class);
             startActivity(intent);
             return true;
         }
@@ -148,11 +155,11 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            switch(position){
+            switch (position) {
                 case 2:
                     NewHangoutTab newHangoutTab = new NewHangoutTab();
                     return newHangoutTab;
-                case 4:
+                case 3:
                     SettingsTab settingsTab = new SettingsTab();
                     return settingsTab;
                 default:
