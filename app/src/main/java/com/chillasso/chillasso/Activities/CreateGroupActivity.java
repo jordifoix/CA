@@ -33,192 +33,21 @@ import java.util.List;
 
 import io.realm.Realm;
 
+import static com.chillasso.chillasso.R.id.group_members_textView;
+
 public class CreateGroupActivity extends AppCompatActivity {
 
-    private EditText groupName;
-    private Button save_group_button;
-    private ListView contactListview;
-    private EditText search_contact_editText;
-    private TextView group_members_textView;
-    private boolean first;
-    private ContactListAdapter contactListAdapter;
-    private ContactListAdapter searchContactListAdapter;
-    private List<UserPhone> users;
-    private List<Contact> contacts;
-    private List<Contact> search_contact;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_group);
-
-        groupName = (EditText) findViewById(R.id.group_name_editText);
-        save_group_button = (Button) findViewById(R.id.save_group_button);
-        contactListview = (ListView) findViewById(R.id.contact_listView);
-        search_contact_editText = (EditText) findViewById(R.id.search_editText);
-        group_members_textView = (TextView) findViewById(R.id.group_members_textView);
-
-        first = true;
-
-        askPermissions();
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        contacts = new ArrayList<Contact>();
-        search_contact = new ArrayList<Contact>();
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        users = realm.where(UserPhone.class).findAll();
-        realm.commitTransaction();
-
-
-        String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC";
-        Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, sortOrder);
-        while (cursor.moveToNext()) {
-            //fer un buscador
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            String phonenumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER));
-            if (phonenumber != null && name != null) {
-                try {
-                    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-                    Phonenumber.PhoneNumber numberProto = phoneUtil.parse(phonenumber, "");
-                    int countryCode = numberProto.getCountryCode();
-                    String nationalNumber = String.valueOf(numberProto.getNationalNumber());
-                    if (searchContact(name, nationalNumber)) {
-
-                    } else {
-                        if (searchWithRealm(nationalNumber)) {
-                            Contact contact = new Contact(name, nationalNumber);
-                            contacts.add(contact);
-                            Log.d("afegit","adsas:  "+nationalNumber);
-                        }
-                    }
-
-                } catch (NumberParseException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-        cursor.close();
-
-        contactListAdapter = new ContactListAdapter(this,contacts);
-        contactListview.setAdapter(contactListAdapter);
-
-        search_contact_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                search_contact.clear();
-                for(Contact contact: contacts){
-                    if(Search(s.toString(),contact)){
-                        search_contact.add(contact);
-                    }
-                }
-                searchContactListAdapter = new ContactListAdapter(CreateGroupActivity.this,search_contact);
-                if(contactListview != null){
-                    searchContactListAdapter.notifyDataSetChanged();
-                    contactListview.setAdapter(searchContactListAdapter);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        save_group_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //save group i guardar el contacte del user treientli el @mydomain.com
-            }
-        });
-
-        contactListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(first){
-                    if(search_contact.size() == 0) {
-                        group_members_textView.setText(group_members_textView.getText().toString() + " You," + contacts.get(position).getName());
-                    }
-                    else{
-                        group_members_textView.setText(group_members_textView.getText().toString()+" You,"+search_contact.get(position).getName());
-                    }
-                    first = false;
-                }
-                else {
-                    if(search_contact.size() == 0)
-                        group_members_textView.setText(group_members_textView.getText().toString()+","+contacts.get(position).getName());
-                    else
-                        group_members_textView.setText(group_members_textView.getText().toString()+","+search_contact.get(position).getName());
-                }
-            }
-        });
+        setContentView(R.layout.create_group_tab);
 
 
 
     }
 
-    private boolean Search(String s, Contact contact) {
-        for(int i = 0; i < s.length();++i){
-            if( s.charAt(i) != contact.getName().charAt(i) && upsideDown(s.charAt(i)) != contact.getName().charAt(i)
-                    && s.charAt(i) != contact.getPhone().charAt(i)) return false;
-        }
-        return true;
-    }
 
-    private char upsideDown(char c) {
-        if (c >= 65 && c <= 90) return (char) (c+32);
-        return (char) (c-32);
-    }
-
-    private boolean searchWithRealm(String phonenumber) {
-        for (UserPhone phone : users) {
-            if (phone.getPhone().equals(phonenumber)) return true;
-        }
-        return false;
-
-    }
-
-    private boolean searchContact(String name, String phone) {
-        for (Contact contact : contacts) {
-            if (contact.getName().equals(name) || contact.getPhone().equals(phone)) return true;
-        }
-        return false;
-    }
-
-    private void askPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED)
-
-        {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_CONTACTS)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        1);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-    }
 }

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.chillasso.chillasso.TabFragments.CreateGroupFragment;
 import com.chillasso.chillasso.R;
 import com.chillasso.chillasso.TabFragments.NewHangoutTab;
 import com.chillasso.chillasso.TabFragments.SettingsTab;
@@ -43,14 +44,14 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private static final String[] tab_name = {
             "Active Hang Outs",
-            "My Hang Outs",
             "New Hang Outs",
-            "Settings"
+            "New Group",
+            "Settings\n"
     };
     private static final int[] tab_icon = {
             R.drawable.ic_event_note_white_24dp,
-            R.drawable.ic_history_white_24dp,
             R.drawable.ic_add_white_24dp,
+            R.drawable.ic_group_add_white_24dp,
             R.drawable.ic_settings_white_24dp
     };
 
@@ -59,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -156,9 +155,12 @@ public class MainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
-                case 2:
+                case 1:
                     NewHangoutTab newHangoutTab = new NewHangoutTab();
                     return newHangoutTab;
+                case 2:
+                    CreateGroupFragment createGroupFragment = new CreateGroupFragment();
+                    return createGroupFragment;
                 case 3:
                     SettingsTab settingsTab = new SettingsTab();
                     return settingsTab;
