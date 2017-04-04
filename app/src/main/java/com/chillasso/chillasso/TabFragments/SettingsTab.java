@@ -33,6 +33,12 @@ public class SettingsTab extends Fragment{
                 startActivity(intent);
             }
         });
+        erase_account_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return view;
     }
 }

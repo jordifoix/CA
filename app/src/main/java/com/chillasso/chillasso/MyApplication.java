@@ -2,10 +2,16 @@ package com.chillasso.chillasso;
 
 import android.app.Application;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.chillasso.chillasso.Activities.LoginActivity;
+import com.chillasso.chillasso.Activities.MainActivity;
 import com.chillasso.chillasso.Class.UserPhone;
 import com.chillasso.chillasso.Class.UserRegistration;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +44,7 @@ public class MyApplication extends Application {
         final Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
-        /*if (users.size()>0) {
+        if (users.size()>0) {
             currentUser = users.get(users.size()-1);
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(currentUser.getPhoneNumber()+"@mydomain.com",currentUser.getPassword())
@@ -52,12 +58,12 @@ public class MyApplication extends Application {
                         }
                     }
                 });
-        }*/
-        //else {
+        }
+        else {
             Intent intent = new Intent(MyApplication.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-       // }
+        }
         realm.commitTransaction();
 
         //fi logino
@@ -70,7 +76,7 @@ public class MyApplication extends Application {
                 for(DataSnapshot user : dataSnapshot.getChildren()){
                     String phone = user.getKey();
                     UserPhone userPhone = new UserPhone(phone);
-                    realm.copyToRealm(userPhone);
+                    realm.copyToRealmOrUpdate(userPhone);
                 }
                 realm.commitTransaction();
             }
