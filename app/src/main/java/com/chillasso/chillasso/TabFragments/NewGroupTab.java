@@ -26,6 +26,11 @@ import com.chillasso.chillasso.Class.UserPhone;
 import com.chillasso.chillasso.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -42,6 +47,7 @@ import io.realm.Realm;
 public class NewGroupTab extends Fragment {
 
     private EditText groupName;
+    private Realm realm;
     private Button save_group_button;
     private ListView contactListview;
     private EditText search_contact_editText;
@@ -70,41 +76,12 @@ public class NewGroupTab extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         contacts = new ArrayList<Contact>();
         search_contact = new ArrayList<Contact>();
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         users = realm.where(UserPhone.class).findAll();
         realm.commitTransaction();
 
-
-        String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC";
-        Cursor cursor =getActivity().getApplicationContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, sortOrder);
-        while (cursor.moveToNext()) {
-            //fer un buscador
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            String phonenumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER));
-            if (phonenumber != null && name != null) {
-                try {
-                    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-                    Phonenumber.PhoneNumber numberProto = phoneUtil.parse(phonenumber, "");
-                    int countryCode = numberProto.getCountryCode();
-                    String nationalNumber = String.valueOf(numberProto.getNationalNumber());
-                    if (searchContact(name, nationalNumber)) {
-
-                    } else {
-                        if (searchWithRealm(nationalNumber)) {
-                            Contact contact = new Contact(name, nationalNumber);
-                            contacts.add(contact);
-                            Log.d("afegit","adsas:  "+nationalNumber);
-                        }
-                    }
-
-                } catch (NumberParseException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-        cursor.close();
+        getMobileRegisteredContacts();
 
         contactListAdapter = new ContactListAdapter(getActivity().getApplicationContext(),contacts);
         contactListview.setAdapter(contactListAdapter);
@@ -163,6 +140,26 @@ public class NewGroupTab extends Fragment {
                 }
             }
         });
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                realm.beginTransaction();
+                for(DataSnapshot user : dataSnapshot.getChildren()){
+                    String phone = user.getKey();
+                    UserPhone userPhone = new UserPhone(phone);
+                    realm.copyToRealmOrUpdate(userPhone);
+                }
+                realm.commitTransaction();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         return view;
 
     }
@@ -223,4 +220,37 @@ public class NewGroupTab extends Fragment {
             }
         }
     }
+
+    private void getMobileRegisteredContacts() {
+        String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC";
+        Cursor cursor =getActivity().getApplicationContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, sortOrder);
+        while (cursor.moveToNext()) {
+            //fer un buscador
+            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phonenumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER));
+            if (phonenumber != null && name != null) {
+                try {
+                    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+                    Phonenumber.PhoneNumber numberProto = phoneUtil.parse(phonenumber, "");
+                    int countryCode = numberProto.getCountryCode();
+                    String nationalNumber = String.valueOf(numberProto.getNationalNumber());
+                    if (searchContact(name, nationalNumber)) {
+
+                    } else {
+                        if (searchWithRealm(nationalNumber)) {
+                            Contact contact = new Contact(name, nationalNumber);
+                            contacts.add(contact);
+                            Log.d("afegit","adsas:  "+nationalNumber);
+                        }
+                    }
+
+                } catch (NumberParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        cursor.close();
+    }
+
 }

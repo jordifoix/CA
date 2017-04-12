@@ -46,36 +46,35 @@ public class MyApplication extends Application {
 
         realm.beginTransaction();
         List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
-        if (users.size()>0) {
-            currentUser = users.get(users.size()-1);
+        if (users.size() > 0) {
+            currentUser = users.get(users.size() - 1);
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            mAuth.signInWithEmailAndPassword(currentUser.getPhoneNumber()+"@mydomain.com",currentUser.getPassword())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Intent intent = new Intent(MyApplication.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+            mAuth.signInWithEmailAndPassword(currentUser.getPhoneNumber() + "@mydomain.com", currentUser.getPassword())
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(MyApplication.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
                         }
-                    }
-                });
-        }
-        else {
+                    });
+        } else {
             Intent intent = new Intent(MyApplication.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
         realm.commitTransaction();
 
-        //fi logino
+        //fi login
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 realm.beginTransaction();
-                for(DataSnapshot user : dataSnapshot.getChildren()){
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
                     String phone = user.getKey();
                     UserPhone userPhone = new UserPhone(phone);
                     realm.copyToRealmOrUpdate(userPhone);
@@ -88,7 +87,7 @@ public class MyApplication extends Application {
 
             }
         });
-            }
+    }
 
 
 }
