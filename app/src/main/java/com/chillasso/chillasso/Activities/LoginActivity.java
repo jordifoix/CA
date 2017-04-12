@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.chillasso.chillasso.Class.UserPhone;
 import com.chillasso.chillasso.Class.UserRegistration;
 import com.chillasso.chillasso.R;
 import com.chillasso.chillasso.Adapters.UsersListAdapter;
@@ -118,12 +119,16 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
+                                realm.beginTransaction();
+                                UserPhone userPhone = new UserPhone(phoneNumber);
+                                realm.copyToRealmOrUpdate(userPhone);
+                                realm.commitTransaction();
                                 Toast.makeText(LoginActivity.this, "Sign up succesful!!", Toast.LENGTH_SHORT).show();
                                 mAuth.signInWithEmailAndPassword(phoneNumber+"@mydomain.com", password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
-                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(phoneNumber);
+                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(phoneNumber);
                                             databaseReference.setValue(phoneNumber);
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                             startActivity(intent);

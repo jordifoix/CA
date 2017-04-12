@@ -42,6 +42,8 @@ public class MyApplication extends Application {
 
         //Login
         final Realm realm = Realm.getDefaultInstance();
+        realm.setAutoRefresh(true);
+
         realm.beginTransaction();
         List<UserRegistration> users = realm.where(UserRegistration.class).findAll();
         if (users.size()>0) {
@@ -68,7 +70,7 @@ public class MyApplication extends Application {
 
         //fi logino
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

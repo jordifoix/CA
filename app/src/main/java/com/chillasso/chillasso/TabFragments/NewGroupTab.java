@@ -39,7 +39,7 @@ import io.realm.Realm;
  * Created by Enric on 04/04/2017.
  */
 
-public class CreateGroupTab extends Fragment {
+public class NewGroupTab extends Fragment {
 
     private EditText groupName;
     private Button save_group_button;

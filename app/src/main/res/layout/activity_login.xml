@@ -71,7 +71,7 @@
             android:layout_alignRight="@+id/password_editText"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:text="Sing In" />
+            android:text="Sign In" />
 
         <CheckBox
             android:id="@+id/remember_me_checkbox"

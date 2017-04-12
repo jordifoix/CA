@@ -8,12 +8,23 @@ import java.util.List;
 
 public class Group {
 
+    private String admin_phonenumber;
     private String name;
     private List<String> groupMembers;
 
-    public Group(String name, List<String> groupMembers) {
+    public Group(String admin_phonenumber,String name, List<String> groupMembers) {
+        this.admin_phonenumber = admin_phonenumber;
         this.name = name;
         this.groupMembers = groupMembers;
+    }
+
+
+    public String getAdmin_phonenumber() {
+        return admin_phonenumber;
+    }
+
+    public void setAdmin_phonenumber(String admin_phonenumber) {
+        this.admin_phonenumber = admin_phonenumber;
     }
 
     public String getName() {

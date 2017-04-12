@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-import com.chillasso.chillasso.TabFragments.CreateGroupTab;
+import com.chillasso.chillasso.TabFragments.NewGroupTab;
 import com.chillasso.chillasso.R;
 import com.chillasso.chillasso.TabFragments.NewHangoutTab;
 import com.chillasso.chillasso.TabFragments.SettingsTab;
@@ -155,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
                     NewHangoutTab newHangoutTab = new NewHangoutTab();
                     return newHangoutTab;
                 case 2:
-                    CreateGroupTab createGroupTab = new CreateGroupTab();
-                    return createGroupTab;
+                    NewGroupTab newGroupTab = new NewGroupTab();
+                    return newGroupTab;
                 case 3:
                     SettingsTab settingsTab = new SettingsTab();
                     return settingsTab;
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             return 4;
         }
 
-        @Override
+        /*@Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
@@ -185,6 +185,6 @@ public class MainActivity extends AppCompatActivity {
                     return "Settings";
             }
             return null;
-        }
+        }*/
     }
 }
