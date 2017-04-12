@@ -57,15 +57,15 @@
         android:inputType="textPersonName" />
 
     <ListView
-        android:id="@+id/save_group_button"
+        android:id="@+id/contact_listView"
         android:layout_width="match_parent"
         android:layout_height="280dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/save_group_button"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="Add Group" />
 
 </LinearLayout>

@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.chillasso.chillasso.Adapters.GroupSpinnerAdapter;
 import com.chillasso.chillasso.R;
 
 /**
@@ -15,6 +18,9 @@ import com.chillasso.chillasso.R;
 
 public class NewHangoutTab extends Fragment {
 
+    private EditText name_hangout_editText;
+    private Spinner group_spinner;
+    private GroupSpinnerAdapter groupSpinnerAdapter;
 
     @Nullable
     @Override

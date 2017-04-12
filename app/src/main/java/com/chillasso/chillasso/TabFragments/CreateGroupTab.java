@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.chillasso.chillasso.Activities.CreateGroupActivity;
 import com.chillasso.chillasso.Adapters.ContactListAdapter;
 import com.chillasso.chillasso.Class.Contact;
 import com.chillasso.chillasso.Class.UserPhone;
@@ -40,7 +39,7 @@ import io.realm.Realm;
  * Created by Enric on 04/04/2017.
  */
 
-public class CreateGroupFragment extends Fragment {
+public class CreateGroupTab extends Fragment {
 
     private EditText groupName;
     private Button save_group_button;

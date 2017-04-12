@@ -1,9 +1,7 @@
 package com.chillasso.chillasso.Activities;
 
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,7 +16,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-import com.chillasso.chillasso.TabFragments.CreateGroupFragment;
+import com.chillasso.chillasso.TabFragments.CreateGroupTab;
 import com.chillasso.chillasso.R;
 import com.chillasso.chillasso.TabFragments.NewHangoutTab;
 import com.chillasso.chillasso.TabFragments.SettingsTab;
@@ -97,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, CreateGroupActivity.class);
-            startActivity(intent);
             return true;
         }
 
@@ -159,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
                     NewHangoutTab newHangoutTab = new NewHangoutTab();
                     return newHangoutTab;
                 case 2:
-                    CreateGroupFragment createGroupFragment = new CreateGroupFragment();
-                    return createGroupFragment;
+                    CreateGroupTab createGroupTab = new CreateGroupTab();
+                    return createGroupTab;
                 case 3:
                     SettingsTab settingsTab = new SettingsTab();
                     return settingsTab;
