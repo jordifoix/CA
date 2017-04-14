@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.chillasso.chillasso.Activities.MainActivity;
 import com.chillasso.chillasso.Adapters.ContactListAdapter;
 import com.chillasso.chillasso.Class.Contact;
 import com.chillasso.chillasso.Class.UserPhone;
@@ -62,7 +63,7 @@ public class NewGroupTab extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.create_group_tab,container,false);
+        View view = inflater.inflate(R.layout.new_group_tab,container,false);
         groupName = (EditText) view.findViewById(R.id.group_name_editText);
         save_group_button = (Button) view.findViewById(R.id.save_group_button);
         contactListview = (ListView) view.findViewById(R.id.contact_listView);
@@ -142,16 +143,21 @@ public class NewGroupTab extends Fragment {
         });
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 realm.beginTransaction();
+                realm.delete(UserPhone.class);
                 for(DataSnapshot user : dataSnapshot.getChildren()){
                     String phone = user.getKey();
                     UserPhone userPhone = new UserPhone(phone);
-                    realm.copyToRealmOrUpdate(userPhone);
+                    realm.copyToRealm(userPhone);
                 }
+                users = realm.where(UserPhone.class).findAll();
                 realm.commitTransaction();
+                contacts.clear();
+                getMobileRegisteredContacts();
+                contactListAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -223,7 +229,7 @@ public class NewGroupTab extends Fragment {
 
     private void getMobileRegisteredContacts() {
         String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC";
-        Cursor cursor =getActivity().getApplicationContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, sortOrder);
+        Cursor cursor= ((MainActivity)getActivity()).getApplicationContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, sortOrder);
         while (cursor.moveToNext()) {
             //fer un buscador
             String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
@@ -238,7 +244,7 @@ public class NewGroupTab extends Fragment {
 
                     } else {
                         if (searchWithRealm(nationalNumber)) {
-                            Contact contact = new Contact(name, nationalNumber);
+                            Contact contact = new Contact(name, nationalNumber,false);
                             contacts.add(contact);
                             Log.d("afegit","adsas:  "+nationalNumber);
                         }

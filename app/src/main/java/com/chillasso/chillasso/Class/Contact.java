@@ -11,13 +11,16 @@ public class Contact {
     private List<String> groupsId;
     private String name;
     private String phone;
+    private boolean selected;
 
-    public Contact(String name, String phone) {
+    public Contact(String name, String phone,boolean selected) {
         this.name = name;
         this.phone = phone;
+        this.selected = selected;
     }
 
-    public Contact(List<String> groupsId, String name, String phone) {
+    public Contact(boolean selected, List<String> groupsId, String name, String phone) {
+        this.selected = selected;
         this.groupsId = groupsId;
         this.name = name;
         this.phone = phone;
@@ -45,5 +48,12 @@ public class Contact {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }
